@@ -31,7 +31,7 @@ For my corpus, I will be using the following artists:
 
 For these artists, their 'This Is' playlists from Spotify will be used.
 
-Furthermore, I want to investigate the difference in my 'bubble' in which my understanding and preference of rap songs goes, with some popular genres that are close in similarity to rap. For this, I will use some of Every Noise at Once's playlists with 10 (sub)genres chosen from the list:
+Furthermore, I want to investigate the difference in my 'bubble' in which my understanding and preference of rap songs goes, with some popular genres that are close in similarity to rap. For this, I will use some of Every Noise at Once's playlists with 10 (sub)genres chosen from the list based on their similarity to rap:
 
 - rap
 - hip hop
@@ -46,6 +46,8 @@ Furthermore, I want to investigate the difference in my 'bubble' in which my und
 
 The goal of this corpus is to create clusters within my corpus in order to analyze to what extend the artists mentioned encompass the genre of rap as a whole. This is done with the above 10 genres, however if required, additional genres that represent rap as well will be added later.
 
+Additionally, I would like to perform an analysis on some of the track-level features of the tracks within my corpus and compare them to one another, in order to look for a pattern between the artists I follow and the genre of hip hop.
+
 ### Representativeness of tracks
 
 First I will handle the artist section of my corpus. I believe the artists mentioned have created tracks for a long time, however they are mostly skewed towards more modern releases, rather than songs from say, before the 2000s. As such there is some lack of representation there. Also,  my list of artists only contains artist I have personally listened to. Generally speaking, most of these artist are quite popular worldwide, thus the section of my corpus lacks any of the less popular artists that are not popular outside of their home country or not popular at all. 
@@ -57,4 +59,3 @@ The second part of my corpus contains playlists obtained from Every Noise at Onc
 
 For an atypical track, I have decided to choose Runaway by Kanye West, with its length being one of the main components I believe is atypical compared to a lot of other tracks in my corpus. The song has a length of 9 minutes and 8 seconds. Another song I would consider a bit atypical is Dreams and Nightmares by Meek Mill. I find this more difficult to categorize using statistical measures, however one of the points I find unique about this song is that it only contains a single long verse which changes tempo mid-verse.
 
-As for a typical track, 
