@@ -55,4 +55,6 @@ The second part of my corpus contains playlists obtained from Every Noise at Onc
 
 ## Typical and atypical tracks
 
+For an atypical track, I have decided to choose Runaway by Kanye West, with its length being one of the main components I believe is atypical compared to a lot of other tracks in my corpus. The song has a length of 9 minutes and 8 seconds. Another song I would consider a bit atypical is Dreams and Nightmares by Meek Mill. I find this more difficult to categorize using statistical measures, however one of the points I find unique about this song is that it only contains a single long verse which changes tempo mid-verse.
 
+As for a typical track, 
