@@ -55,7 +55,4 @@ First I will handle the artist section of my corpus. I believe the artists menti
 The second part of my corpus contains playlists obtained from Every Noise at Once. These contain socks that are much older than the first section, thus there is a bit more representation there. Likewise, less popular artists are also featured here. The problem of representation from songs written in different language still exists, however and I will likely have to look for ways to incorporate songs from other languages as well.
 
 
-## Typical and atypical tracks
-
-For an atypical track, I have decided to choose Runaway by Kanye West, with its length being one of the main components I believe is atypical compared to a lot of other tracks in my corpus. The song has a length of 9 minutes and 8 seconds. Another song I would consider a bit atypical is Dreams and Nightmares by Meek Mill. I find this more difficult to categorize using statistical measures, however one of the points I find unique about this song is that it only contains a single long verse which changes tempo mid-verse.
 
