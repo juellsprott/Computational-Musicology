@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Computational Musicology 2023"
 output: github_document
 ---
 
@@ -7,24 +7,165 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## GitHub Documents
+This repository contains my course portfolio for Computational Musicology
 
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+PLEASE DO NOT SHOW THIS PORTFOLIO IN CLASS
 
-## Including Code
+# My corpus
 
-You can include R code in the document as follows:
 
-```{r cars}
-summary(cars)
+
+## Comparison points
+For my corpus, I have decided to look into the various genres I have listened to for the past two years using Spotify Wrapped. From what I can see, I have listened to various genres like rock, pop, soul, media scores et cetera. However, one of the most occuring main genres to me is hip hop. As such, I have decided to create a corpus around rap, specifically using the artists I have listened to the most over the past two years.
+
+For my corpus, I will be using the following artists:
+- J. Cole
+- Jay-Z
+- Kid Cudi
+- Kanye West
+- Tyler, the Creator
+- Vince Staples
+- Swae Lee
+- Meek Mill
+- Mac Miller
+- A$AP Rocky
+- 21 Savage
+- Childish Gambino
+- Drake
+- Metro Boomin
+- Travis Scott
+- Pop Smoke
+- Frank Ocean
+
+For these artists, their 'This Is' playlists from Spotify will be used.
+
+I would like to investigate the difference in my 'bubble' in which my understanding and preference of rap songs goes, with some popular genres that are close in similarity to rap. For this, I will use some of Every Noise at Once's playlists with several (sub)genres chosen from the list based on their similarity to rap:
+
+- southern hip hop
+- conscious rap
+- pop rap
+- trap
+- r&b
+- melodic rap
+- chicago rap
+- g funk
+
+The goal of this corpus is to create clusters within my corpus in order to analyze to which subgenres or styles these rappers belong to. This is done with the above genres as starting point, however if required, additional genres that might provide better grouping results will be added later.
+
+
+### Representativeness of tracks
+
+First I will handle the artist section of my corpus. I believe the artists mentioned have created tracks for a long time, however they are mostly skewed towards more modern releases, rather than songs from say, before the 2000s. As such there is some lack of representation there. Also,  my list of artists only contains artist I have personally listened to. Generally speaking, most of these artist are quite popular worldwide, thus the section of my corpus lacks any of the less popular artists that are not popular outside of their home country or not popular at all. 
+
+The second part of my corpus contains playlists obtained from Every Noise at Once. These contain socks that are much older than the first section, thus there is a bit more representation there. Likewise, less popular artists are also featured here. The problem of representation from songs written in different language still exists, however and I will likely have to look for ways to incorporate songs from other languages as well.
+
+## Week 7 plots
+
+### Heatmap
+
+First, a heatmap in order to compare the average of certain features for the artists chosen above. The main goal is to get an idea of how the playlists compare on average.
+
+```{r heatmap, echo=FALSE, warning=FALSE,message=FALSE}
+library(tidyverse)
+library(spotifyr)
+library(reshape)
+library(GGally)
+
+
+j_cole <- get_playlist_audio_features("", "37i9dQZF1DXcGnc6d1f20P")
+kanye <- get_playlist_audio_features("", "37i9dQZF1DZ06evO3nMr04")
+jay_z <- get_playlist_audio_features("", "37i9dQZF1DX7jGZjyDa8rI")
+cudi <- get_playlist_audio_features("", "37i9dQZF1DZ06evO04TCIU")
+tyler <- get_playlist_audio_features("", "37i9dQZF1DX8IzjtXj8ThV")
+vince <- get_playlist_audio_features("", "37i9dQZF1DZ06evO3Cn7Uc")
+swae <- get_playlist_audio_features("", "37i9dQZF1DZ06evO0SmMhV")
+meek <- get_playlist_audio_features("", "37i9dQZF1DZ06evO18pFbq")
+mac <- get_playlist_audio_features("", "37i9dQZF1DZ06evO2NufN6")
+rocky <- get_playlist_audio_features("", "37i9dQZF1DX2EykupcJRsV")
+savage <- get_playlist_audio_features("", "37i9dQZF1DWYojpWKpDMGi")
+gambino <- get_playlist_audio_features("", "37i9dQZF1DZ06evO4aKvZe")
+drake <- get_playlist_audio_features("", "37i9dQZF1DX7QOv5kjbU68")
+metro <- get_playlist_audio_features("", "37i9dQZF1DZ06evO06Ki7m")
+travis <- get_playlist_audio_features("", "37i9dQZF1DWUgX5cUT0GbU")
+pop_smoke <- get_playlist_audio_features("", "37i9dQZF1DZ06evO04kFZs")
+frank <- get_playlist_audio_features("", "37i9dQZF1DXdyjMX5o2vCq")
+
+
+my_playlists <-
+  bind_rows(kanye |> mutate(category = "Kanye"),
+    j_cole |> mutate(category = "J Cole"),
+    jay_z |> mutate(category = "Jay Z"),
+    cudi |> mutate(category = "Kid Cudi"),
+    tyler |> mutate(category = "Tyler, the Creator"),
+    vince |> mutate(category = "Vince Staples"),
+    swae |> mutate(category = "Swae Lee"),
+    meek |> mutate(category = "Meek Mill"),
+    mac |> mutate(category = "Mac Miller"),
+    rocky |> mutate(category = "A$AP Rocky"),
+    savage |> mutate(category = "21 Savage"),
+    drake |> mutate(category = "Drake"),
+    metro |> mutate(category = "Mwtro Boomin"),
+    travis |> mutate(category = "Travis Scott"),
+    pop_smoke |> mutate(category = "Pop Smoke"),
+    frank |> mutate(category = "Frank Ocean"))
+
+my_playlists_mean <- my_playlists %>%
+ group_by(playlist_name) %>%
+ summarize(mean_energy = mean(energy), mean_speech = mean(speechiness),
+            mean_valence = mean(valence),
+            mean_acousticness = mean(acousticness),
+            mean_liveness = mean(liveness),
+            mean_danceability = mean(danceability)) %>%
+drop_na()
+
+playlist_df <- as.data.frame(my_playlists_mean)
+
+my_playlists_heatmap <- melt(playlist_df)
+
+ggplot(my_playlists_heatmap, aes(x = playlist_name,
+ y = variable, fill = value)) + geom_tile(lwd = 1.5,
+            linetype = 1) +
+  theme(axis.text.x = element_text(angle = 90)) +
+   labs(y = "Track-level features", x = "Playlist name", fill = "level") +
+  ggtitle("Heatmap containing average feature values for each artist")
+
 ```
 
-## Including Plots
+### Parallel coordinates
 
-You can also embed plots, for example:
+Next, we dive deeper and take a look at the parallel coordinates for each playlist
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r, echo=FALSE}
+filtered_list <- my_playlists %>%
+                group_by(playlist_name) %>%
+                select(playlist_name, energy,
+                 acousticness, danceability, valence) %>%
+                    drop_na()
+
+ggparcoord(data = filtered_list,
+            columns = 2:5,
+            groupColumn = 1,
+            alphaLines = .75,
+           showPoints = TRUE,
+           scale = "globalminmax") +
+  facet_wrap(~ playlist_name) +
+  theme(axis.text.x = element_text(angle = 90),
+  legend.position = "none") +
+  labs(y = "Feature value", x = "Feature") +
+  ggtitle("Parallel coordinates for various features for all tracks")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+### Scatter plots
+
+From the parallel coordinates above, we can see that acousticness and valence have the most variance. In order to further analyze this variance, we plot both of these for every track in the corpus against eachother in a scatterplot.
+
+```{r, echo=FALSE}
+
+ggplot(filtered_list, aes(x = acousticness,
+    y = valence, color = playlist_name)) +
+    geom_point() +
+facet_wrap(~ playlist_name) +
+theme(axis.text.x = element_text(angle = 90),
+legend.position = "none") +
+ggtitle("Acousticness and valence comparison, scatterplot")
+```

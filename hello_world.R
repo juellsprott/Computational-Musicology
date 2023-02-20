@@ -61,17 +61,15 @@ my_playlists_heatmap <- melt(playlist_df)
 my_playlists_heatmap
 
 ggplot(my_playlists_heatmap, aes(x = playlist_name,
- y = variable, fill = value)) + geom_tile() +
+ y = variable, fill = value)) + geom_tile(lwd = 1.5,
+            linetype = 1) +
   theme(axis.text.x = element_text(angle = 90)) +
-   labs(y = "Track-level features", x = "Playlist name", fill = "level")
+   labs(y = "Track-level features", x = "Playlist name", fill = "level") +
+  ggtitle("Heatmap containing average feature values for each artist")
 
 
 filtered_list <- my_playlists %>%
                 group_by(playlist_name) %>%
-                mutate(norm_energy = energy / max(energy)) %>%
-                mutate(norm_danceability = danceability / max(danceability)) %>%
-                mutate(norm_acousticness = acousticness / max(acousticness)) %>%
-                slice_sample(n = 25) %>%
                 select(playlist_name, energy,
                  acousticness, danceability, valence) %>%
                     drop_na()
@@ -86,5 +84,13 @@ ggparcoord(data = filtered_list,
   facet_wrap(~ playlist_name) +
   theme(axis.text.x = element_text(angle = 90),
   legend.position = "none") +
-  labs(y = "Feature value", x = "Feature")
+  labs(y = "Feature value", x = "Feature") +
+  ggtitle("Parallel coordinates for various features for all tracks")
 
+  ggplot(filtered_list, aes(x = acousticness,
+     y = valence, color = playlist_name)) +
+      geom_point() +
+  facet_wrap(~ playlist_name) +
+  theme(axis.text.x = element_text(angle = 90),
+  legend.position = "none") +
+  ggtitle("Acousticness and valence comparison, scatterplot")
