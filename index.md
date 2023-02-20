@@ -18,10 +18,25 @@ hip hop. As such, I have decided to create a corpus around rap,
 specifically using the artists I have listened to the most over the past
 two years.
 
-For my corpus, I will be using the following artists: - J. Cole -
-Jay-Z - Kid Cudi - Kanye West - Tyler, the Creator - Vince Staples -
-Swae Lee - Meek Mill - Mac Miller - A\$AP Rocky - 21 Savage - Childish
-Gambino - Drake - Metro Boomin - Travis Scott - Pop Smoke - Frank Ocean
+For my corpus, I will be using the following artists:
+
+- J. Cole
+- Jay-Z
+- Kid Cudi
+- Kanye West
+- Tyler, the Creator
+- Vince Staples
+- Swae Lee
+- Meek Mill
+- Mac Miller
+- A\$AP Rocky
+- 21 Savage
+- Childish Gambino
+- Drake
+- Metro Boomin
+- Travis Scott
+- Pop Smoke
+- Frank Ocean
 
 For these artists, their ‘This Is’ playlists from Spotify will be used.
 
