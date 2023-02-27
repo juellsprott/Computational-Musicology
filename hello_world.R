@@ -91,6 +91,6 @@ ggparcoord(data = filtered_list,
      y = valence, color = playlist_name)) +
       geom_point() +
   facet_wrap(~ playlist_name) +
-  theme(axis.text.x = element_text(angle = 90),
+  theme(axis.text.x = element_text(angle = 80),
   legend.position = "none") +
   ggtitle("Acousticness and valence comparison, scatterplot")

@@ -1,19 +1,28 @@
 ---
 title: "Computational Musicology 2023"
-output: github_document
+output:
+  flexdashboard::flex_dashboard:
+    storyboard: true
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(plotly)
+library(spotifyr)
+library(reshape)
+library(GGally)
 ```
+
+
+
+### My corpus
 
 This repository contains my course portfolio for Computational Musicology
 
 PLEASE DO NOT SHOW THIS PORTFOLIO IN CLASS
-
-# My corpus
-
-
 
 ## Comparison points
 For my corpus, I have decided to look into the various genres I have listened to for the past two years using Spotify Wrapped. From what I can see, I have listened to various genres like rock, pop, soul, media scores et cetera. However, one of the most occuring main genres to me is hip hop. As such, I have decided to create a corpus around rap, specifically using the artists I have listened to the most over the past two years.
@@ -54,23 +63,19 @@ I would like to investigate the difference in my 'bubble' in which my understand
 The goal of this corpus is to create clusters within my corpus in order to analyze to which subgenres or styles these rappers belong to. This is done with the above genres as starting point, however if required, additional genres that might provide better grouping results will be added later.
 
 
-### Representativeness of tracks
+## Representativeness of tracks
 
 First I will handle the artist section of my corpus. I believe the artists mentioned have created tracks for a long time, however they are mostly skewed towards more modern releases, rather than songs from say, before the 2000s. As such there is some lack of representation there. Also,  my list of artists only contains artist I have personally listened to. Generally speaking, most of these artist are quite popular worldwide, thus the section of my corpus lacks any of the less popular artists that are not popular outside of their home country or not popular at all. 
 
 The second part of my corpus contains playlists obtained from Every Noise at Once. These contain socks that are much older than the first section, thus there is a bit more representation there. Likewise, less popular artists are also featured here. The problem of representation from songs written in different language still exists, however and I will likely have to look for ways to incorporate songs from other languages as well.
 
-## Week 7 plots
 
 ### Heatmap
 
 First, a heatmap in order to compare the average of certain features for the artists chosen above. The main goal is to get an idea of how the playlists compare on average.
 
 ```{r heatmap, echo=FALSE, warning=FALSE,message=FALSE}
-library(tidyverse)
-library(spotifyr)
-library(reshape)
-library(GGally)
+
 
 
 j_cole <- get_playlist_audio_features("", "37i9dQZF1DXcGnc6d1f20P")
