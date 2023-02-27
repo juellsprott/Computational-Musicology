@@ -72,7 +72,6 @@ The second part of my corpus contains playlists obtained from Every Noise at Onc
 
 ### Heatmap
 
-First, a heatmap in order to compare the average of certain features for the artists chosen above. The main goal is to get an idea of how the playlists compare on average.
 
 ```{r heatmap, echo=FALSE, warning=FALSE,message=FALSE}
 
@@ -136,6 +135,8 @@ ggplot(my_playlists_heatmap, aes(x = playlist_name,
   ggtitle("Heatmap containing average feature values for each artist")
 
 ```
+*** 
+First, a heatmap in order to compare the average of certain features for the artists chosen above. The main goal is to get an idea of how the playlists compare on average.
 
 ### Parallel coordinates
 
@@ -163,8 +164,6 @@ ggparcoord(data = filtered_list,
 
 ### Scatter plots
 
-From the parallel coordinates above, we can see that acousticness and valence have the most variance. In order to further analyze this variance, we plot both of these for every track in the corpus against eachother in a scatterplot.
-
 ```{r, echo=FALSE}
 
 ggplot(filtered_list, aes(x = acousticness,
@@ -175,3 +174,5 @@ theme(axis.text.x = element_text(angle = 90),
 legend.position = "none") +
 ggtitle("Acousticness and valence comparison, scatterplot")
 ```
+***
+From the parallel coordinates above, we can see that acousticness and valence have the most variance. In order to further analyze this variance, we plot both of these for every track in the corpus against eachother in a scatterplot.
