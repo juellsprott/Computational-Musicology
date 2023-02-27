@@ -19,6 +19,8 @@ library(reshape)
 library(GGally)
 library(compmus)
 library(ggpubr)
+library(ggplot2)
+library(ggplotify)
 
 j_cole <- get_playlist_audio_features("", "37i9dQZF1DXcGnc6d1f20P")
 kanye <- get_playlist_audio_features("", "37i9dQZF1DZ06evO3nMr04")
@@ -230,7 +232,7 @@ labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
 theme_minimal() +
 scale_fill_viridis_c()
 
-ggarrange(loud, beach, ncol = 2)
+cowplot::plot_grid(beach, loud)
 ```
 
 ***
