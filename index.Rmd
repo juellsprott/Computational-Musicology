@@ -105,7 +105,7 @@ First I will handle the artist section of my corpus. I believe the artists menti
 
 The second part of my corpus contains playlists obtained from Every Noise at Once. These contain socks that are much older than the first section, thus there is a bit more representation there. Likewise, less popular artists are also featured here. The problem of representation from songs written in different language still exists, however and I will likely have to look for ways to incorporate songs from other languages as well.
 
-### Heatmap [track-level features]
+### Comparing average features for each artists' playlist [track-level features]
 
 ```{r heatmap, echo=FALSE, warning=FALSE,message=FALSE}
 
@@ -133,9 +133,9 @@ ggplot(my_playlists_heatmap, aes(x = playlist_name,
 
 ***
  
-First, a heatmap in order to compare the average of certain features for the artists chosen above. The main goal is to get an idea of how the playlists compare on average.
+First, a heatmap in order to compare the average of certain features for the artists chosen ealier. The main goal is to get an idea of how the playlists compare on average. The most 
 
-### Parallel coordinates [track-level features]
+### Comparing energy, accousticness, danceability and valence for all tracks [track-level features]
 
 ```{r, echo=FALSE}
 filtered_list <- my_playlists %>%
@@ -164,7 +164,7 @@ ggplotly(parcoord)
 
 Next, we dive deeper and take a look at the parallel coordinates for each playlist
 
-### Scatter plots [track-level features]
+### Diving deeper into  [track-level features]
 
 ```{r, echo=FALSE}
 
@@ -229,9 +229,6 @@ geom_tile() +
 labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
 theme_minimal() +
 scale_fill_viridis_c()
-
-loud
-beach
 ```
 
 ***
