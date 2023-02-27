@@ -5,6 +5,7 @@ output:
     storyboard: true
     orientation: columns
     vertical_layout: fill
+    theme: cosmo
 ---
 
 
@@ -16,8 +17,47 @@ library(plotly)
 library(spotifyr)
 library(reshape)
 library(GGally)
-```
 
+
+j_cole <- get_playlist_audio_features("", "37i9dQZF1DXcGnc6d1f20P")
+kanye <- get_playlist_audio_features("", "37i9dQZF1DZ06evO3nMr04")
+jay_z <- get_playlist_audio_features("", "37i9dQZF1DX7jGZjyDa8rI")
+cudi <- get_playlist_audio_features("", "37i9dQZF1DZ06evO04TCIU")
+tyler <- get_playlist_audio_features("", "37i9dQZF1DX8IzjtXj8ThV")
+vince <- get_playlist_audio_features("", "37i9dQZF1DZ06evO3Cn7Uc")
+swae <- get_playlist_audio_features("", "37i9dQZF1DZ06evO0SmMhV")
+meek <- get_playlist_audio_features("", "37i9dQZF1DZ06evO18pFbq")
+mac <- get_playlist_audio_features("", "37i9dQZF1DZ06evO2NufN6")
+rocky <- get_playlist_audio_features("", "37i9dQZF1DX2EykupcJRsV")
+savage <- get_playlist_audio_features("", "37i9dQZF1DWYojpWKpDMGi")
+gambino <- get_playlist_audio_features("", "37i9dQZF1DZ06evO4aKvZe")
+drake <- get_playlist_audio_features("", "37i9dQZF1DX7QOv5kjbU68")
+metro <- get_playlist_audio_features("", "37i9dQZF1DZ06evO06Ki7m")
+travis <- get_playlist_audio_features("", "37i9dQZF1DWUgX5cUT0GbU")
+pop_smoke <- get_playlist_audio_features("", "37i9dQZF1DZ06evO04kFZs")
+frank <- get_playlist_audio_features("", "37i9dQZF1DXdyjMX5o2vCq")
+
+
+my_playlists <-
+  bind_rows(kanye |> mutate(category = "Kanye"),
+    j_cole |> mutate(category = "J Cole"),
+    jay_z |> mutate(category = "Jay Z"),
+    cudi |> mutate(category = "Kid Cudi"),
+    tyler |> mutate(category = "Tyler, the Creator"),
+    vince |> mutate(category = "Vince Staples"),
+    swae |> mutate(category = "Swae Lee"),
+    meek |> mutate(category = "Meek Mill"),
+    mac |> mutate(category = "Mac Miller"),
+    rocky |> mutate(category = "A$AP Rocky"),
+    savage |> mutate(category = "21 Savage"),
+    drake |> mutate(category = "Drake"),
+    metro |> mutate(category = "Mwtro Boomin"),
+    travis |> mutate(category = "Travis Scott"),
+    pop_smoke |> mutate(category = "Pop Smoke"),
+    frank |> mutate(category = "Frank Ocean"))
+
+my_playlists
+```
 
 ### My corpus
 
@@ -66,50 +106,9 @@ First I will handle the artist section of my corpus. I believe the artists menti
 
 The second part of my corpus contains playlists obtained from Every Noise at Once. These contain socks that are much older than the first section, thus there is a bit more representation there. Likewise, less popular artists are also featured here. The problem of representation from songs written in different language still exists, however and I will likely have to look for ways to incorporate songs from other languages as well.
 
-
 ### Heatmap
 
-
 ```{r heatmap, echo=FALSE, warning=FALSE,message=FALSE}
-
-
-
-j_cole <- get_playlist_audio_features("", "37i9dQZF1DXcGnc6d1f20P")
-kanye <- get_playlist_audio_features("", "37i9dQZF1DZ06evO3nMr04")
-jay_z <- get_playlist_audio_features("", "37i9dQZF1DX7jGZjyDa8rI")
-cudi <- get_playlist_audio_features("", "37i9dQZF1DZ06evO04TCIU")
-tyler <- get_playlist_audio_features("", "37i9dQZF1DX8IzjtXj8ThV")
-vince <- get_playlist_audio_features("", "37i9dQZF1DZ06evO3Cn7Uc")
-swae <- get_playlist_audio_features("", "37i9dQZF1DZ06evO0SmMhV")
-meek <- get_playlist_audio_features("", "37i9dQZF1DZ06evO18pFbq")
-mac <- get_playlist_audio_features("", "37i9dQZF1DZ06evO2NufN6")
-rocky <- get_playlist_audio_features("", "37i9dQZF1DX2EykupcJRsV")
-savage <- get_playlist_audio_features("", "37i9dQZF1DWYojpWKpDMGi")
-gambino <- get_playlist_audio_features("", "37i9dQZF1DZ06evO4aKvZe")
-drake <- get_playlist_audio_features("", "37i9dQZF1DX7QOv5kjbU68")
-metro <- get_playlist_audio_features("", "37i9dQZF1DZ06evO06Ki7m")
-travis <- get_playlist_audio_features("", "37i9dQZF1DWUgX5cUT0GbU")
-pop_smoke <- get_playlist_audio_features("", "37i9dQZF1DZ06evO04kFZs")
-frank <- get_playlist_audio_features("", "37i9dQZF1DXdyjMX5o2vCq")
-
-
-my_playlists <-
-  bind_rows(kanye |> mutate(category = "Kanye"),
-    j_cole |> mutate(category = "J Cole"),
-    jay_z |> mutate(category = "Jay Z"),
-    cudi |> mutate(category = "Kid Cudi"),
-    tyler |> mutate(category = "Tyler, the Creator"),
-    vince |> mutate(category = "Vince Staples"),
-    swae |> mutate(category = "Swae Lee"),
-    meek |> mutate(category = "Meek Mill"),
-    mac |> mutate(category = "Mac Miller"),
-    rocky |> mutate(category = "A$AP Rocky"),
-    savage |> mutate(category = "21 Savage"),
-    drake |> mutate(category = "Drake"),
-    metro |> mutate(category = "Mwtro Boomin"),
-    travis |> mutate(category = "Travis Scott"),
-    pop_smoke |> mutate(category = "Pop Smoke"),
-    frank |> mutate(category = "Frank Ocean"))
 
 my_playlists_mean <- my_playlists %>%
  group_by(playlist_name) %>%
@@ -143,7 +142,7 @@ First, a heatmap in order to compare the average of certain features for the art
 filtered_list <- my_playlists %>%
                 group_by(playlist_name) %>%
                 select(playlist_name, energy,
-                 acousticness, danceability, valence) %>%
+                 acousticness, danceability, valence, track.name) %>%
                     drop_na()
 
 parcoord <- ggparcoord(data = filtered_list,
