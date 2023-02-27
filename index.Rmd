@@ -132,6 +132,7 @@ ggplot(my_playlists_heatmap, aes(x = playlist_name,
   ggtitle("Heatmap containing average feature values for each artist")
 
 ```
+
 ***
  
 First, a heatmap in order to compare the average of certain features for the artists chosen above. The main goal is to get an idea of how the playlists compare on average.
@@ -145,7 +146,7 @@ filtered_list <- my_playlists %>%
                  acousticness, danceability, valence) %>%
                     drop_na()
 
-ggparcoord(data = filtered_list,
+parcoord <- ggparcoord(data = filtered_list,
             columns = 2:5,
             groupColumn = 1,
             alphaLines = .75,
@@ -156,7 +157,10 @@ ggparcoord(data = filtered_list,
   legend.position = "none") +
   labs(y = "Feature value", x = "Feature") +
   ggtitle("Parallel coordinates for various features for all tracks")
+
+ggplotly(parcoord)
 ```
+
 ***
 
 Next, we dive deeper and take a look at the parallel coordinates for each playlist
@@ -165,14 +169,16 @@ Next, we dive deeper and take a look at the parallel coordinates for each playli
 
 ```{r, echo=FALSE}
 
-ggplot(filtered_list, aes(x = acousticness,
+scatter <- ggplot(filtered_list, aes(x = acousticness,
     y = valence, color = playlist_name)) +
     geom_point() +
 facet_wrap(~ playlist_name) +
 theme(axis.text.x = element_text(angle = 90),
 legend.position = "none") +
 ggtitle("Acousticness and valence comparison, scatterplot")
+ggplotly(scatter)
 ```
+
 ***
 
 From the parallel coordinates above, we can see that acousticness and valence have the most variance. In order to further analyze this variance, we plot both of these for every track in the corpus against eachother in a scatterplot.
