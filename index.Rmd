@@ -133,7 +133,7 @@ ggplot(my_playlists_heatmap, aes(x = playlist_name,
 
 ***
  
-First, a heatmap in order to compare the average of certain features for the artists chosen ealier. The main goal is to get an idea of how the playlists compare on average. The most 
+First, a heatmap in order to compare the average of certain features for the artists chosen ealier. The main goal is to get an idea of how the playlists compare on average. We can already identify several outliers, such as the playlists for Frank Ocean having overall lower scores for its features compared to other playlists. Jay-Z in comparison has much higher average energy and valence. Speech, valence and accousticness seem to have the most diversity.
 
 ### Comparing energy, accousticness, danceability and valence for all tracks [track-level features]
 
@@ -162,9 +162,9 @@ ggplotly(parcoord)
 
 ***
 
-Next, we dive deeper and take a look at the parallel coordinates for each playlist
+Next, we dive deeper and take a look at the parallel coordinates for each playlist using various track-level features for every single track in our corpus. From this, we can see that the average distribution for features is somewhere along the line of high energy, low acousticness, high danceability and low valence, with some extreme outliers for Frank Ocean, Mac Miller and Vince Staples.
 
-### Diving deeper into  [track-level features]
+### Diving deeper into acousticness and valence  [track-level features]
 
 ```{r, echo=FALSE}
 
@@ -180,8 +180,7 @@ ggplotly(scatter)
 
 ***
 
-From the parallel coordinates above, we can see that acousticness and valence have the most variance. In order to further analyze this variance, we plot both of these for every track in the corpus against eachother in a scatterplot.
-
+We now do a comparison of two features in order to detect various track outliers. 
 ### [chroma features]
 
 ```{r, echo=FALSE}
@@ -233,4 +232,4 @@ scale_fill_viridis_c()
 
 ***
 
-From the parallel coordinates above, we can see that acousticness and valence have the most variance. In order to further analyze this variance, we plot both of these for every track in the corpus against eachother in a scatterplot.
+For our chromagrams, we have chosen two outliers from the previous plots. THE BEACH by Vince Staples and Loud by Mac Miller.
