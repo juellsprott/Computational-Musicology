@@ -25,7 +25,6 @@ This repository contains my course portfolio for Computational Musicology
 
 PLEASE DO NOT SHOW THIS PORTFOLIO IN CLASS
 
-## Comparison points
 For my corpus, I have decided to look into the various genres I have listened to for the past two years using Spotify Wrapped. From what I can see, I have listened to various genres like rock, pop, soul, media scores et cetera. However, one of the most occuring main genres to me is hip hop. As such, I have decided to create a corpus around rap, specifically using the artists I have listened to the most over the past two years.
 
 For my corpus, I will be using the following artists:
@@ -62,9 +61,6 @@ I would like to investigate the difference in my 'bubble' in which my understand
 - g funk
 
 The goal of this corpus is to create clusters within my corpus in order to analyze to which subgenres or styles these rappers belong to. This is done with the above genres as starting point, however if required, additional genres that might provide better grouping results will be added later.
-
-
-## Representativeness of tracks
 
 First I will handle the artist section of my corpus. I believe the artists mentioned have created tracks for a long time, however they are mostly skewed towards more modern releases, rather than songs from say, before the 2000s. As such there is some lack of representation there. Also,  my list of artists only contains artist I have personally listened to. Generally speaking, most of these artist are quite popular worldwide, thus the section of my corpus lacks any of the less popular artists that are not popular outside of their home country or not popular at all. 
 
