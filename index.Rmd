@@ -21,6 +21,7 @@ library(compmus)
 library(ggpubr)
 library(ggplot2)
 library(ggplotify)
+library(gridExtra)
 
 j_cole <- get_playlist_audio_features("", "37i9dQZF1DXcGnc6d1f20P")
 kanye <- get_playlist_audio_features("", "37i9dQZF1DZ06evO3nMr04")
@@ -186,7 +187,7 @@ We now do a comparison of two features in order to detect various track outliers
 
 ### Comparing two outliers using chroma features [chroma features]
 
-```{r, echo=FALSE}
+```{r, fig.width=15, echo=FALSE}
 
 
 loud <-
@@ -229,7 +230,8 @@ labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
 theme_minimal() +
 scale_fill_viridis_c()
 
-cowplot::plot_grid(beach, loud)
+
+ggarrange(loud, beach, common.legend=TRUE)
 ```
 
 ***
