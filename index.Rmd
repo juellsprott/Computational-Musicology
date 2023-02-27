@@ -17,6 +17,7 @@ library(plotly)
 library(spotifyr)
 library(reshape)
 library(GGally)
+library(compmus)
 
 
 j_cole <- get_playlist_audio_features("", "37i9dQZF1DXcGnc6d1f20P")
@@ -55,11 +56,9 @@ my_playlists <-
     travis |> mutate(category = "Travis Scott"),
     pop_smoke |> mutate(category = "Pop Smoke"),
     frank |> mutate(category = "Frank Ocean"))
-
-my_playlists
 ```
 
-### My corpus
+### Introduction
 
 This repository contains my course portfolio for Computational Musicology
 
@@ -106,7 +105,7 @@ First I will handle the artist section of my corpus. I believe the artists menti
 
 The second part of my corpus contains playlists obtained from Every Noise at Once. These contain socks that are much older than the first section, thus there is a bit more representation there. Likewise, less popular artists are also featured here. The problem of representation from songs written in different language still exists, however and I will likely have to look for ways to incorporate songs from other languages as well.
 
-### Heatmap
+### Heatmap [track-level features]
 
 ```{r heatmap, echo=FALSE, warning=FALSE,message=FALSE}
 
@@ -136,7 +135,7 @@ ggplot(my_playlists_heatmap, aes(x = playlist_name,
  
 First, a heatmap in order to compare the average of certain features for the artists chosen above. The main goal is to get an idea of how the playlists compare on average.
 
-### Parallel coordinates
+### Parallel coordinates [track-level features]
 
 ```{r, echo=FALSE}
 filtered_list <- my_playlists %>%
@@ -151,8 +150,8 @@ parcoord <- ggparcoord(data = filtered_list,
             alphaLines = .75,
            showPoints = TRUE,
            scale = "globalminmax") +
-  geom_text(label = "track.name") +
   facet_wrap(~ playlist_name) +
+  theme_light() +
   theme(axis.text.x = element_text(angle = 90),
   legend.position = "none") +
   labs(y = "Feature value", x = "Feature") +
@@ -165,7 +164,7 @@ ggplotly(parcoord)
 
 Next, we dive deeper and take a look at the parallel coordinates for each playlist
 
-### Scatter plots
+### Scatter plots [track-level features]
 
 ```{r, echo=FALSE}
 
@@ -177,6 +176,43 @@ theme(axis.text.x = element_text(angle = 90),
 legend.position = "none") + theme_light() +
 ggtitle("Acousticness and valence comparison, scatterplot")
 ggplotly(scatter)
+```
+
+***
+
+From the parallel coordinates above, we can see that acousticness and valence have the most variance. In order to further analyze this variance, we plot both of these for every track in the corpus against eachother in a scatterplot.
+
+### [chroma features]
+
+```{r, echo=FALSE}
+
+loud <-
+  get_tidy_audio_analysis("4KRXcKUesQHKUkX6tHbF01") |>
+  select(segments) |>
+  unnest(segments) |>
+  select(start, duration, pitches)
+
+beach <-
+get_tidy_audio_analysis("0lqAn1YfFVQ3SdoF7tRZO2") |>
+select(segments) |>
+unnest(segments) |>
+select(start, duration, pitches)
+
+loud |>
+  mutate(pitches = map(pitches, compmus_normalise, "euclidean")) |>
+  compmus_gather_chroma() |>
+  ggplot(
+    aes(
+      x = start + duration / 2,
+      width = duration,
+      y = pitch_class,
+      fill = value
+    )
+  ) +
+  geom_tile() +
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
+  theme_minimal() +
+  scale_fill_viridis_c()
 ```
 
 ***
