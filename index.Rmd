@@ -183,7 +183,8 @@ ggplotly(scatter)
 
 ***
 
-We now do a comparison of two features in order to detect various track outliers. 
+We now do a comparison of two features in order to detect various track outliers. The majority of the songs seem to reside within low acousticness, while being somewhat evenly distributed in valence. The majority of artist playlist tracks fall under this, however each artist has tracks that deviate moderately from this norm. 
+Some artists have a more even distribution among both valence and acousticness, while others have a majority of their tracks in high acousticness. 
 
 ### Comparing two outliers using chroma features [chroma features]
 
@@ -208,7 +209,9 @@ loud <-
   geom_tile() +
   labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
   theme_minimal() +
-  scale_fill_viridis_c()
+  scale_fill_viridis_c() +
+ggtitle("Chromagram for Loud by Mac Miller") +
+  theme(plot.title = element_text(hjust = 0.5))
 
 beach <-
 get_tidy_audio_analysis("0lqAn1YfFVQ3SdoF7tRZO2") |>
@@ -228,12 +231,16 @@ ggplot(
 geom_tile() +
 labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
 theme_minimal() +
-scale_fill_viridis_c()
+scale_fill_viridis_c() +
+ggtitle("Chromagram for THE BEACH by Vince Staples") +
+  theme(plot.title = element_text(hjust = 0.5))
 
 
-ggarrange(loud, beach, common.legend=TRUE)
+ggarrange(loud, beach, common.legend = TRUE)
 ```
 
 ***
 
-For our chromagrams, we have chosen two outliers from the previous plots. THE BEACH by Vince Staples and Loud by Mac Miller.
+For our chromagrams, we have chosen two outliers from the previous plots. THE BEACH by Vince Staples and Loud by Mac Miller. For Loud, the song is mostly in the C and C#|Db keys, although in the first few seconds some time is spent in the F key. According to the previous scatter plot, this track has both low valence and accousticness. Thus, from these observations and the fact that a majority of songs in the corpus have low valence and acousticness, it can be said that there is a correlation between the low acousticness and valence and the C/C#|Db range of key notes.
+
+THE BEACH on the other hand, is a lot more scattered, spending most of the time in G, F#|Gb, F and E keys, with occasional A and D key notes. This song has both high valence and acousticness. This, combined with the chromagram for Loud, shows us that valence and acousticness has a positive correlation with erraticness in key notes.
