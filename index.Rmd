@@ -18,7 +18,7 @@ library(spotifyr)
 library(reshape)
 library(GGally)
 library(compmus)
-library(gridExtra)
+library(ggpubr)
 
 j_cole <- get_playlist_audio_features("", "37i9dQZF1DXcGnc6d1f20P")
 kanye <- get_playlist_audio_features("", "37i9dQZF1DZ06evO3nMr04")
@@ -181,7 +181,8 @@ ggplotly(scatter)
 ***
 
 We now do a comparison of two features in order to detect various track outliers. 
-### [chroma features]
+
+### Comparing two outliers using chroma features [chroma features]
 
 ```{r, echo=FALSE}
 
@@ -228,6 +229,8 @@ geom_tile() +
 labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
 theme_minimal() +
 scale_fill_viridis_c()
+
+ggarrange(loud, beach, ncol = 2)
 ```
 
 ***
