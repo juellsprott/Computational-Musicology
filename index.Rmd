@@ -61,6 +61,61 @@ my_playlists <-
     frank |> mutate(category = "Frank Ocean"))
 ```
 
+### Looking in-depth into Runaway, by Kanye West [self-similarity matrices and cepstrograms]
+
+```{r, echo=FALSE}
+
+
+runaway <-
+  get_tidy_audio_analysis("3DK6m7It6Pw857FcQftMds") |>
+  compmus_align(bars, segments) |>
+  select(bars) |>
+  unnest(bars) |>
+  mutate(
+    pitches =
+      map(segments,
+        compmus_summarise, pitches,
+        method = "acentre", norm = "manhattan"
+      )
+  ) |>
+  mutate(
+    timbre =
+      map(segments,
+        compmus_summarise, timbre,
+        method = "mean"
+      )
+  )
+bind_rows(
+  runaway |>
+    compmus_self_similarity(pitches, "aitchison") |>
+    mutate(d = d / max(d), type = "Chroma"),
+  runaway |>
+    compmus_self_similarity(timbre, "euclidean") |>
+    mutate(d = d / max(d), type = "Timbre")
+) |>
+  mutate() |>
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  facet_wrap(~type) +
+  scale_fill_viridis_c(guide = "none") +
+  theme_classic() +
+  labs(x = "", y = "")
+
+```
+
+***
+
+One of the songs I believe is an outlier worth looking into is 'Runaway' by Kanye West, due to it's long duration and change in key notes throughout the song.
+
 ### Introduction
 
 This repository contains my course portfolio for Computational Musicology
