@@ -64,32 +64,44 @@ my_playlists <-
 
 Visualization {.storyboard}
 ===================================================
-### Inspecting the keys for different artist outliers in my corpus [tempo analysis]
+### Looking into temporal feature distribution of my corpus [temporal analysis]
 
-```{r, echo=FALSE}
-key_labels <- c("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B")
+```{r, fig.height=30, echo=FALSE}
 
-temp_playlist <- bind_rows(
-    tyler |> mutate(category = "Tyler, the Creator"),
-    vince |> mutate(category = "Vince Staples"),
-    mac |> mutate(category = "Mac Miller"),
-    frank |> mutate(category = "Frank Ocean"))
 
-hist <- ggplot(temp_playlist, aes(x = key, fill = category)) +
-  geom_histogram(binwidth = 1, color = "black") +
-  labs(title = "Histogram of Keys for several outlier playlists",
-   x = "Key", y = "Count") +
-  scale_x_continuous(breaks = 0:11, labels = key_labels)
+# Group by category and calculate mean tempo for each category
+tempo_summary <- my_playlists |>
+  group_by(category) |>
+  summarize(mean_tempo = mean(tempo))
 
-ggplotly(hist)
+
+# Create the box plot
+tempo_box <- ggplot(my_playlists, aes(x = category,
+   y = tempo, color = category)) +
+  geom_boxplot() +
+  geom_point(aes(color = category, text = track.name), hoverinfo = "text") +
+  labs(x = "Category", y = "Tempo (BPM)") +
+  ggtitle("Distribution of tempos by artist/subgenre") +
+  scale_x_discrete(limits = tempo_summary$category) +
+  theme_minimal()
+
+ggplotly(tempo_box)
+
+# flacko <- get_tidy_audio_analysis("1j6kDJttn6wbVyMaM42Nxm")
+# flacko |>
+#   tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) |>
+#   ggplot(aes(x = time, y = bpm, fill = power)) +
+#   geom_raster() +
+#   scale_fill_viridis_c(guide = "none") +
+#   labs(x = "Time (s)", y = "Tempo (BPM)") +
+#   theme_classic()
+
+# flacko
 ```
 
 ***
 
-For this analysis, we will focus on four different artist with noticable difference compared to other artists in the corpus. These are Frank Ocean, Mac Miller, Tyler the Creator and Vince Staples.
-
-As shown in the plots, the outlier playlist has most of its peaks in C, C#, F and G#. For all except Frank Ocean, C# is the most popular key. This makes sense as this is also a popular key for other playlists in my corpus. However, none of these artists have certain patterns in their histograms which they share with eachother. For example, Mac Miller tends to lean towards only 3 keys, while Tyler often branches out to different keys in his tracks.
-
+Here, a boxplot is made for each playlist, taking the tempo for each track. Here, we immediately see two outliers, namely Lord Pretty Flacko Jodye 2 for a BPM far higher than A$AP Rocky's other tracks and having the highest BPM. Meanwhile for lowest BPM, we have Tyler the Creator's BLESSED. Overall however, the boxplots seem to hover around 80 and 150 BPM, although the median for each artist differs greatly. Some artist seem to vary greatly in their BPMs, while others tend to stick around the same range.
 
 ### Inspecting the keys for different artist outliers in my corpus [total analysis]
 
