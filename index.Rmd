@@ -64,6 +64,33 @@ my_playlists <-
 
 Visualization {.storyboard}
 ===================================================
+### Inspecting the keys for different artist outliers in my corpus [tempo analysis]
+
+```{r, echo=FALSE}
+key_labels <- c("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B")
+
+temp_playlist <- bind_rows(
+    tyler |> mutate(category = "Tyler, the Creator"),
+    vince |> mutate(category = "Vince Staples"),
+    mac |> mutate(category = "Mac Miller"),
+    frank |> mutate(category = "Frank Ocean"))
+
+hist <- ggplot(temp_playlist, aes(x = key, fill = category)) +
+  geom_histogram(binwidth = 1, color = "black") +
+  labs(title = "Histogram of Keys for several outlier playlists",
+   x = "Key", y = "Count") +
+  scale_x_continuous(breaks = 0:11, labels = key_labels)
+
+ggplotly(hist)
+```
+
+***
+
+For this analysis, we will focus on four different artist with noticable difference compared to other artists in the corpus. These are Frank Ocean, Mac Miller, Tyler the Creator and Vince Staples.
+
+As shown in the plots, the outlier playlist has most of its peaks in C, C#, F and G#. For all except Frank Ocean, C# is the most popular key. This makes sense as this is also a popular key for other playlists in my corpus. However, none of these artists have certain patterns in their histograms which they share with eachother. For example, Mac Miller tends to lean towards only 3 keys, while Tyler often branches out to different keys in his tracks.
+
+
 ### Inspecting the keys for different artist outliers in my corpus [total analysis]
 
 ```{r, echo=FALSE}
