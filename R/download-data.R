@@ -79,11 +79,12 @@ tempo_summary <- my_playlists |>
 tempo_box <- ggplot(my_playlists, aes(x = category,
    y = tempo, color = category)) +
   geom_boxplot() +
-  geom_point(aes(color = category, text = track.name), hoverinfo = "text") +
+  geom_jitter(aes(color = category, text = track.name), hoverinfo = "text") +
   labs(x = "Category", y = "Tempo (BPM)") +
   ggtitle("Distribution of tempos by artist/subgenre") +
   scale_x_discrete(limits = tempo_summary$category) +
-  theme_minimal()
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 saveRDS(object = tempo_box, file = "data/tempo_box.RDS")
 
@@ -97,7 +98,7 @@ temp_playlist <- bind_rows(
     frank |> mutate(category = "Frank Ocean"))
 
 hist <- ggplot(temp_playlist, aes(x = key, fill = category)) +
-  geom_histogram(binwidth = 1, color = "black") +
+  geom_histogram(binwidth = 1, position="dodge2", color = "black") +
   labs(title = "Histogram of Keys for several outlier playlists",
    x = "Key", y = "Count") +
   scale_x_continuous(breaks = 0:11, labels = key_labels)

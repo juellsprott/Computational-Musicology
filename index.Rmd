@@ -28,85 +28,58 @@ my_playlists <- readRDS(file = "data/artist_playlists.RDS")
 
 ```
 
+Introduction
+===================================================
+
+This repository contains my course portfolio for Computational Musicology
+
+PLEASE DO NOT SHOW THIS PORTFOLIO IN CLASS
+
+For my corpus, I have decided to look into the various genres I have listened to for the past two years using Spotify Wrapped. From what I can see, I have listened to various genres like rock, pop, soul, media scores et cetera. However, one of the most occuring main genres to me is hip hop. As such, I have decided to create a corpus around rap, specifically using the artists I have listened to the most over the past two years.
+
+For my corpus, I will be using the following artists:
+
+- J. Cole
+- Jay-Z
+- Kid Cudi
+- Kanye West
+- Tyler, the Creator
+- Vince Staples
+- Swae Lee
+- Meek Mill
+- Mac Miller
+- A$AP Rocky
+- 21 Savage
+- Childish Gambino
+- Drake
+- Metro Boomin
+- Travis Scott
+- Pop Smoke
+- Frank Ocean
+
+For these artists, their 'This Is' playlists from Spotify will be used.
+
+I would like to investigate the difference in my 'bubble' in which my understanding and preference of rap songs goes, with some popular genres that are close in similarity to rap. For this, I will use some of Every Noise at Once's playlists with several (sub)genres chosen from the list based on their similarity to rap:
+
+- southern hip hop
+- conscious rap
+- pop rap
+- trap
+- r&b
+- melodic rap
+- chicago rap
+- g funk
+
+The goal of this corpus is to create clusters within my corpus in order to analyze to which subgenres or styles these rappers belong to. This is done with the above genres as starting point, however if required, additional genres that might provide better grouping results will be added later.
+
+First I will handle the artist section of my corpus. I believe the artists mentioned have created tracks for a long time, however they are mostly skewed towards more modern releases, rather than songs from say, before the 2000s. As such there is some lack of representation there. Also,  my list of artists only contains artist I have personally listened to. Generally speaking, most of these artist are quite popular worldwide, thus the section of my corpus lacks any of the less popular artists that are not popular outside of their home country or not popular at all. 
+
+The second part of my corpus contains playlists obtained from Every Noise at Once. These contain songs that are much older than the first section, thus there is a bit more representation there. Likewise, less popular artists are also featured here. The problem of representation from songs written in different language still exists, however and I will likely have to look for ways to incorporate songs from other languages as well.
+
+
 Visualization {.storyboard}
 ===================================================
-### Looking into temporal feature distribution of my corpus [temporal analysis]
 
-```{r, fig.height=30, echo=FALSE}
-
-
-tempo_box <- readRDS(file = "data/tempo_box.RDS")
-
-ggplotly(tempo_box)
-
-# flacko <- get_tidy_audio_analysis("1j6kDJttn6wbVyMaM42Nxm")
-# flacko |>
-#   tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) |>
-#   ggplot(aes(x = time, y = bpm, fill = power)) +
-#   geom_raster() +
-#   scale_fill_viridis_c(guide = "none") +
-#   labs(x = "Time (s)", y = "Tempo (BPM)") +
-#   theme_classic()
-
-# flacko
-```
-
-***
-
-Here, a boxplot is made for each playlist, taking the tempo for each track. Here, we immediately see two outliers, namely Lord Pretty Flacko Jodye 2 for a BPM far higher than A$AP Rocky's other tracks and having the highest BPM. Meanwhile for lowest BPM, we have Tyler the Creator's BLESSED. Overall however, the boxplots seem to hover around 80 and 150 BPM, although the median for each artist differs greatly. Some artist seem to vary greatly in their BPMs, while others tend to stick around the same range.
-
-### Inspecting the keys for different artist outliers in my corpus [total analysis]
-
-```{r, echo=FALSE}
-
-
-hist <- readRDS(file = "data/hist.RDS")
-
-ggplotly(hist)
-```
-
-***
-
-For this analysis, we will focus on four different artist with noticable difference compared to other artists in the corpus. These are Frank Ocean, Mac Miller, Tyler the Creator and Vince Staples.
-
-As shown in the plots, the outlier playlist has most of its peaks in C, C#, F and G#. For all except Frank Ocean, C# is the most popular key. This makes sense as this is also a popular key for other playlists in my corpus. However, none of these artists have certain patterns in their histograms which they share with eachother. For example, Mac Miller tends to lean towards only 3 keys, while Tyler often branches out to different keys in his tracks.
-
-### Looking in-depth into Runaway, by Kanye West [self-similarity matrices and cepstrograms]
-
-```{r, echo=FALSE}
-
-
-runaway <- readRDS(file = "data/runaway.RDS")
-bind_rows(
-  runaway |>
-    compmus_self_similarity(pitches, "aitchison") |>
-    mutate(d = d / max(d), type = "Chroma"),
-  runaway |>
-    compmus_self_similarity(timbre, "euclidean") |>
-    mutate(d = d / max(d), type = "Timbre")
-) |>
-  mutate() |>
-  ggplot(
-    aes(
-      x = xstart + xduration / 2,
-      width = xduration,
-      y = ystart + yduration / 2,
-      height = yduration,
-      fill = d
-    )
-  ) +
-  geom_tile() +
-  coord_fixed() +
-  facet_wrap(~type) +
-  scale_fill_viridis_c(guide = "none") +
-  theme_classic() +
-  labs(x = "", y = "")
-
-```
-
-***
-
-One of the songs I believe is an outlier worth looking into is 'Runaway' by Kanye West, due to it's long duration and change in key notes throughout the song.
 
 ### Comparing average features for each artists' playlist [track-level features]
 
@@ -161,59 +134,102 @@ ggarrange(loud, beach, common.legend = TRUE)
 
 ***
 
-For our chromagrams, we have chosen two outliers from the previous plots. THE BEACH by Vince Staples and Loud by Mac Miller. For Loud, the song is mostly in the C and C#|Db keys, although in the first few seconds some time is spent in the F key. According to the previous scatter plot, this track has both low valence and accousticness. Thus, from these observations and the fact that a majority of songs in the corpus have low valence and acousticness, it can be said that there is a correlation between the low acousticness and valence and the C/C#|Db range of key notes.
+For our chromagrams, we have chosen two outliers from the previous scatter plot. THE BEACH by Vince Staples and Loud by Mac Miller. For Loud, the song is mostly in the C and C#|Db keys, although in the first few seconds some time is spent in the F key. According to the previous scatter plot, this track has both low valence and accousticness. Thus, from these observations and the fact that a majority of songs in the corpus have low valence and acousticness, it can be said that there is a correlation between the low acousticness and valence and the C/C#|Db range of key notes.
 
 THE BEACH on the other hand, is a lot more scattered, spending most of the time in G, F#|Gb, F and E keys, with occasional A and D key notes. This song has both high valence and acousticness. This, combined with the chromagram for Loud, shows us that valence and acousticness has a positive correlation with erraticness in key notes.
 
-Introduction
-===================================================
+### Looking into temporal feature distribution of my corpus [temporal analysis]
 
-This repository contains my course portfolio for Computational Musicology
+```{r, fig.height=30, echo=FALSE}
 
-PLEASE DO NOT SHOW THIS PORTFOLIO IN CLASS
 
-For my corpus, I have decided to look into the various genres I have listened to for the past two years using Spotify Wrapped. From what I can see, I have listened to various genres like rock, pop, soul, media scores et cetera. However, one of the most occuring main genres to me is hip hop. As such, I have decided to create a corpus around rap, specifically using the artists I have listened to the most over the past two years.
+tempo_box <- readRDS(file = "data/tempo_box.RDS")
 
-For my corpus, I will be using the following artists:
+ggplotly(tempo_box)
 
-- J. Cole
-- Jay-Z
-- Kid Cudi
-- Kanye West
-- Tyler, the Creator
-- Vince Staples
-- Swae Lee
-- Meek Mill
-- Mac Miller
-- A$AP Rocky
-- 21 Savage
-- Childish Gambino
-- Drake
-- Metro Boomin
-- Travis Scott
-- Pop Smoke
-- Frank Ocean
+```
 
-For these artists, their 'This Is' playlists from Spotify will be used.
+***
 
-I would like to investigate the difference in my 'bubble' in which my understanding and preference of rap songs goes, with some popular genres that are close in similarity to rap. For this, I will use some of Every Noise at Once's playlists with several (sub)genres chosen from the list based on their similarity to rap:
+Here, a boxplot is made for each playlist, taking the tempo for each track. Here, we immediately see two outliers, namely Lord Pretty Flacko Jodye 2 for a BPM far higher than A$AP Rocky's other tracks and having the highest BPM. Meanwhile for lowest BPM, we have Tyler the Creator's BLESSED. Overall however, the boxplots seem to hover around 80 and 150 BPM, although the median for each artist differs greatly. Some artist seem to vary greatly in their BPMs, while others tend to stick around the same range.
 
-- southern hip hop
-- conscious rap
-- pop rap
-- trap
-- r&b
-- melodic rap
-- chicago rap
-- g funk
+### Inspecting the keys for different artist outliers in my corpus [tonal analysis]
 
-The goal of this corpus is to create clusters within my corpus in order to analyze to which subgenres or styles these rappers belong to. This is done with the above genres as starting point, however if required, additional genres that might provide better grouping results will be added later.
+```{r, echo=FALSE}
 
-First I will handle the artist section of my corpus. I believe the artists mentioned have created tracks for a long time, however they are mostly skewed towards more modern releases, rather than songs from say, before the 2000s. As such there is some lack of representation there. Also,  my list of artists only contains artist I have personally listened to. Generally speaking, most of these artist are quite popular worldwide, thus the section of my corpus lacks any of the less popular artists that are not popular outside of their home country or not popular at all. 
 
-The second part of my corpus contains playlists obtained from Every Noise at Once. These contain songs that are much older than the first section, thus there is a bit more representation there. Likewise, less popular artists are also featured here. The problem of representation from songs written in different language still exists, however and I will likely have to look for ways to incorporate songs from other languages as well.
+hist <- readRDS(file = "data/hist.RDS")
+
+ggplotly(hist)
+```
+
+***
+
+For this analysis, we will focus on four different artist with noticable difference compared to other artists in the corpus. These are Frank Ocean, Mac Miller, Tyler the Creator and Vince Staples.
+
+As shown in the plots, the outlier playlist has most of its peaks in C, C#, F and G#. For all except Frank Ocean, C# is the most popular key. This makes sense as this is also a popular key for other playlists in my corpus. However, none of these artists have certain patterns in their histograms which they share with eachother. For example, Mac Miller tends to lean towards only 3 keys, while Tyler often branches out to different keys in his tracks.
+
+### Looking in-depth into Runaway, by Kanye West [self-similarity matrices and cepstrograms]
+
+```{r, echo=FALSE}
+
+
+runaway <- readRDS(file = "data/runaway.RDS")
+bind_rows(
+  runaway |>
+    compmus_self_similarity(pitches, "aitchison") |>
+    mutate(d = d / max(d), type = "Chroma"),
+  runaway |>
+    compmus_self_similarity(timbre, "euclidean") |>
+    mutate(d = d / max(d), type = "Timbre")
+) |>
+  mutate() |>
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  facet_wrap(~type) +
+  scale_fill_viridis_c(guide = "none") +
+  theme_classic() +
+  labs(x = "", y = "")
+
+```
+
+***
+
+One of the songs I believe is an outlier worth looking into is 'Runaway' by Kanye West, due to it's long duration and change in key notes throughout the song.
+
+### Classifying the various artist playlists using XGBoost and Every Noise At Once [playlist classification]
+
+```{r,fig.width=20, echo=FALSE}
+
+
+imp <- readRDS(file = "data/imp_ggplot.RDS")
+his <- readRDS(file = "data/classify_hist.RDS")
+
+ggarrange(imp, his)
+
+```
+
+***
+
+Lastly, we will attempt to classify the artist playlists using some of the spotify features 
 
 Conclusion
 ===================================================
 
-TBD
+In conclusion, the use of R and the spotifyr package has enabled us to explore and analyze various music playlists in a comprehensive manner.
+ We have been able to use a variety of techniques including data visualization, clustering,
+  classification and machine learning to uncover patterns and insights in the data. Through this analysis,
+   we have gained a better understanding of the characteristics and preferences of different genres, subgenres,
+    and playlists. Additionally, we have demonstrated how to perform various analyses on both the track and playlist level.
+     This approach can be useful for a wide range of applications such as recommending similar playlists to users or analyzing listener preferences for targeted advertising.
+      The insights gained from this analysis can also provide valuable information to the music industry for marketing and promotional purposes. 
+      Overall, the use of R and the spotifyr package is a powerful tool for analyzing music data and can be used to gain insights into a wide range of music-related research questions.
