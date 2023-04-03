@@ -24,42 +24,8 @@ library(ggplot2)
 library(ggplotify)
 library(gridExtra)
 
-j_cole <- get_playlist_audio_features("", "37i9dQZF1DXcGnc6d1f20P")
-kanye <- get_playlist_audio_features("", "37i9dQZF1DZ06evO3nMr04")
-jay_z <- get_playlist_audio_features("", "37i9dQZF1DX7jGZjyDa8rI")
-cudi <- get_playlist_audio_features("", "37i9dQZF1DZ06evO04TCIU")
-tyler <- get_playlist_audio_features("", "37i9dQZF1DX8IzjtXj8ThV")
-vince <- get_playlist_audio_features("", "37i9dQZF1DZ06evO3Cn7Uc")
-swae <- get_playlist_audio_features("", "37i9dQZF1DZ06evO0SmMhV")
-meek <- get_playlist_audio_features("", "37i9dQZF1DZ06evO18pFbq")
-mac <- get_playlist_audio_features("", "37i9dQZF1DZ06evO2NufN6")
-rocky <- get_playlist_audio_features("", "37i9dQZF1DX2EykupcJRsV")
-savage <- get_playlist_audio_features("", "37i9dQZF1DWYojpWKpDMGi")
-gambino <- get_playlist_audio_features("", "37i9dQZF1DZ06evO4aKvZe")
-drake <- get_playlist_audio_features("", "37i9dQZF1DX7QOv5kjbU68")
-metro <- get_playlist_audio_features("", "37i9dQZF1DZ06evO06Ki7m")
-travis <- get_playlist_audio_features("", "37i9dQZF1DWUgX5cUT0GbU")
-pop_smoke <- get_playlist_audio_features("", "37i9dQZF1DZ06evO04kFZs")
-frank <- get_playlist_audio_features("", "37i9dQZF1DXdyjMX5o2vCq")
+my_playlists <- readRDS(file = "data/artist_playlists.RDS")
 
-
-my_playlists <-
-  bind_rows(kanye |> mutate(category = "Kanye"),
-    j_cole |> mutate(category = "J Cole"),
-    jay_z |> mutate(category = "Jay Z"),
-    cudi |> mutate(category = "Kid Cudi"),
-    tyler |> mutate(category = "Tyler, the Creator"),
-    vince |> mutate(category = "Vince Staples"),
-    swae |> mutate(category = "Swae Lee"),
-    meek |> mutate(category = "Meek Mill"),
-    mac |> mutate(category = "Mac Miller"),
-    rocky |> mutate(category = "A$AP Rocky"),
-    savage |> mutate(category = "21 Savage"),
-    drake |> mutate(category = "Drake"),
-    metro |> mutate(category = "Mwtro Boomin"),
-    travis |> mutate(category = "Travis Scott"),
-    pop_smoke |> mutate(category = "Pop Smoke"),
-    frank |> mutate(category = "Frank Ocean"))
 ```
 
 Visualization {.storyboard}
@@ -69,21 +35,7 @@ Visualization {.storyboard}
 ```{r, fig.height=30, echo=FALSE}
 
 
-# Group by category and calculate mean tempo for each category
-tempo_summary <- my_playlists |>
-  group_by(category) |>
-  summarize(mean_tempo = mean(tempo))
-
-
-# Create the box plot
-tempo_box <- ggplot(my_playlists, aes(x = category,
-   y = tempo, color = category)) +
-  geom_boxplot() +
-  geom_point(aes(color = category, text = track.name), hoverinfo = "text") +
-  labs(x = "Category", y = "Tempo (BPM)") +
-  ggtitle("Distribution of tempos by artist/subgenre") +
-  scale_x_discrete(limits = tempo_summary$category) +
-  theme_minimal()
+tempo_box <- readRDS(file = "data/tempo_box.RDS")
 
 ggplotly(tempo_box)
 
@@ -106,19 +58,9 @@ Here, a boxplot is made for each playlist, taking the tempo for each track. Here
 ### Inspecting the keys for different artist outliers in my corpus [total analysis]
 
 ```{r, echo=FALSE}
-key_labels <- c("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B")
 
-temp_playlist <- bind_rows(
-    tyler |> mutate(category = "Tyler, the Creator"),
-    vince |> mutate(category = "Vince Staples"),
-    mac |> mutate(category = "Mac Miller"),
-    frank |> mutate(category = "Frank Ocean"))
 
-hist <- ggplot(temp_playlist, aes(x = key, fill = category)) +
-  geom_histogram(binwidth = 1, color = "black") +
-  labs(title = "Histogram of Keys for several outlier playlists",
-   x = "Key", y = "Count") +
-  scale_x_continuous(breaks = 0:11, labels = key_labels)
+hist <- readRDS(file = "data/hist.RDS")
 
 ggplotly(hist)
 ```
@@ -134,25 +76,7 @@ As shown in the plots, the outlier playlist has most of its peaks in C, C#, F an
 ```{r, echo=FALSE}
 
 
-runaway <-
-  get_tidy_audio_analysis("3DK6m7It6Pw857FcQftMds") |>
-  compmus_align(bars, segments) |>
-  select(bars) |>
-  unnest(bars) |>
-  mutate(
-    pitches =
-      map(segments,
-        compmus_summarise, pitches,
-        method = "acentre", norm = "manhattan"
-      )
-  ) |>
-  mutate(
-    timbre =
-      map(segments,
-        compmus_summarise, timbre,
-        method = "mean"
-      )
-  )
+runaway <- readRDS(file = "data/runaway.RDS")
 bind_rows(
   runaway |>
     compmus_self_similarity(pitches, "aitchison") |>
@@ -188,25 +112,9 @@ One of the songs I believe is an outlier worth looking into is 'Runaway' by Kany
 
 ```{r heatmap, echo=FALSE, warning=FALSE,message=FALSE}
 
-my_playlists_mean <- my_playlists %>%
- group_by(playlist_name) %>%
- summarize(mean_energy = mean(energy), mean_speech = mean(speechiness),
-            mean_valence = mean(valence),
-            mean_acousticness = mean(acousticness),
-            mean_liveness = mean(liveness),
-            mean_danceability = mean(danceability)) %>%
-drop_na()
 
-playlist_df <- as.data.frame(my_playlists_mean)
-
-my_playlists_heatmap <- melt(playlist_df)
-
-ggplot(my_playlists_heatmap, aes(x = playlist_name,
- y = variable, fill = value)) + geom_tile(lwd = 1.5,
-            linetype = 1) + theme_minimal() +
-  theme(axis.text.x = element_text(angle = 90)) +
-   labs(y = "Track-level features", x = "Playlist name", fill = "level") +
-  ggtitle("Heatmap containing average feature values for each artist")
+playlist_heatmap <- readRDS(file = "data/playlist_heatmap.RDS")
+playlist_heatmap
 
 ```
 
@@ -217,24 +125,9 @@ First, a heatmap in order to compare the average of certain features for the art
 ### Comparing energy, accousticness, danceability and valence for all tracks [track-level features]
 
 ```{r, echo=FALSE}
-filtered_list <- my_playlists %>%
-                group_by(playlist_name) %>%
-                select(playlist_name, energy,
-                 acousticness, danceability, valence, track.name) %>%
-                    drop_na()
 
-parcoord <- ggparcoord(data = filtered_list,
-            columns = 2:5,
-            groupColumn = 1,
-            alphaLines = .75,
-           showPoints = TRUE,
-           scale = "globalminmax") +
-  facet_wrap(~ playlist_name) +
-  theme_light() +
-  theme(axis.text.x = element_text(angle = 90),
-  legend.position = "none") +
-  labs(y = "Feature value", x = "Feature") +
-  ggtitle("Parallel coordinates for various features for all tracks")
+
+parcoord <- readRDS(file = "data/parcoord.RDS")
 
 ggplotly(parcoord)
 ```
@@ -247,13 +140,7 @@ Next, we dive deeper and take a look at the parallel coordinates for each playli
 
 ```{r, echo=FALSE}
 
-scatter <- ggplot(filtered_list, aes(x = acousticness,
-    y = valence, color = playlist_name, label = track.name)) +
-    geom_point() +
-facet_wrap(~ playlist_name) +
-theme(axis.text.x = element_text(angle = 90),
-legend.position = "none") + theme_light() +
-ggtitle("Acousticness and valence comparison, scatterplot")
+scatter <- readRDS(file = "data/scatter.RDS")
 ggplotly(scatter)
 ```
 
@@ -266,51 +153,8 @@ Some artists have a more even distribution among both valence and acousticness, 
 
 ```{r, fig.width=15, echo=FALSE}
 
-
-loud <-
-  get_tidy_audio_analysis("4KRXcKUesQHKUkX6tHbF01") |>
-  select(segments) |>
-  unnest(segments) |>
-  select(start, duration, pitches) |>
-  mutate(pitches = map(pitches, compmus_normalise, "euclidean")) |>
-  compmus_gather_chroma() |>
-  ggplot(
-    aes(
-      x = start + duration / 2,
-      width = duration,
-      y = pitch_class,
-      fill = value
-    )
-  ) +
-  geom_tile() +
-  labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
-  theme_minimal() +
-  scale_fill_viridis_c() +
-ggtitle("Chromagram for Loud by Mac Miller") +
-  theme(plot.title = element_text(hjust = 0.5))
-
-beach <-
-get_tidy_audio_analysis("0lqAn1YfFVQ3SdoF7tRZO2") |>
-select(segments) |>
-unnest(segments) |>
-select(start, duration, pitches) |>
-mutate(pitches = map(pitches, compmus_normalise, "euclidean")) |>
-compmus_gather_chroma() |>
-ggplot(
-  aes(
-    x = start + duration / 2,
-    width = duration,
-    y = pitch_class,
-    fill = value
-  )
-) +
-geom_tile() +
-labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
-theme_minimal() +
-scale_fill_viridis_c() +
-ggtitle("Chromagram for THE BEACH by Vince Staples") +
-  theme(plot.title = element_text(hjust = 0.5))
-
+loud <- readRDS(file = "data/loud.RDS")
+beach <- readRDS(file = "data/beach.RDS")
 
 ggarrange(loud, beach, common.legend = TRUE)
 ```
@@ -367,7 +211,7 @@ The goal of this corpus is to create clusters within my corpus in order to analy
 
 First I will handle the artist section of my corpus. I believe the artists mentioned have created tracks for a long time, however they are mostly skewed towards more modern releases, rather than songs from say, before the 2000s. As such there is some lack of representation there. Also,  my list of artists only contains artist I have personally listened to. Generally speaking, most of these artist are quite popular worldwide, thus the section of my corpus lacks any of the less popular artists that are not popular outside of their home country or not popular at all. 
 
-The second part of my corpus contains playlists obtained from Every Noise at Once. These contain socks that are much older than the first section, thus there is a bit more representation there. Likewise, less popular artists are also featured here. The problem of representation from songs written in different language still exists, however and I will likely have to look for ways to incorporate songs from other languages as well.
+The second part of my corpus contains playlists obtained from Every Noise at Once. These contain songs that are much older than the first section, thus there is a bit more representation there. Likewise, less popular artists are also featured here. The problem of representation from songs written in different language still exists, however and I will likely have to look for ways to incorporate songs from other languages as well.
 
 Conclusion
 ===================================================
