@@ -48,8 +48,8 @@ tracks$category_pred <- cat_labels
 
 his <- ggplot(tracks, aes(x = category_pred, fill = category)) +
   geom_bar(position = "dodge2", color = "black") +
-  labs(title = "Histogram of genre predic",
-       x = "Key", y = "Count") 
+  labs(title = "Histogram of genre predictions for all artist tracks",
+       x = "Label", y = "Count") 
 
 
 saveRDS(object = his, file = "data/classify_hist.RDS")

@@ -70,7 +70,7 @@ I would like to investigate the difference in my 'bubble' in which my understand
 - chicago rap
 - g funk
 
-The goal of this corpus is to create clusters within my corpus in order to analyze to which subgenres or styles these rappers belong to. This is done with the above genres as starting point, however if required, additional genres that might provide better grouping results will be added later.
+The goal of this corpus is to create clusters within my corpus in order to analyze to which subgenres or styles these rappers belong to. This is done with the above genres.
 
 First I will handle the artist section of my corpus. I believe the artists mentioned have created tracks for a long time, however they are mostly skewed towards more modern releases, rather than songs from say, before the 2000s. As such there is some lack of representation there. Also,  my list of artists only contains artist I have personally listened to. Generally speaking, most of these artist are quite popular worldwide, thus the section of my corpus lacks any of the less popular artists that are not popular outside of their home country or not popular at all. 
 
@@ -204,7 +204,7 @@ bind_rows(
 
 ***
 
-One of the songs I believe is an outlier worth looking into is 'Runaway' by Kanye West, due to it's long duration and change in key notes throughout the song.
+One of the songs I believe is an outlier worth looking into is 'Runaway' by Kanye West, due to it's long duration and change in key notes throughout the song. Looking at the self-similarity matrices, we immediately notice the stark contrast between the first few seconds of the track and a moment after the 5 minute mark when compared to the rest of the song. When listening to the song, these moments are mostly made up of a paino solo, with one key repeatedly being pressed. Both matrices clearly show this difference, while also showing how the second contrasting moment splits the track into two distinct parts. Both parts build upon the piano, but contain different levels of instrumentalness and speech. This is easier seen in the self similarty matrix for chroma. When taking into acount the entire matrices however, the song seems to keep a clear structure throughout. 
 
 ### Classifying the various artist playlists using XGBoost and Every Noise At Once [playlist classification]
 
@@ -220,16 +220,15 @@ ggarrange(imp, his)
 
 ***
 
-Lastly, we will attempt to classify the artist playlists using some of the spotify features 
+Lastly, we will attempt to classify the artist playlists using some of the spotify features from the 8 mentioned subgenres, and attempt to look into if spotify features can accurately provide the genre of a track. Namely, we will be using "danceability", 
+"speechiness", "acousticness", "instrumentalness", "liveness", "tempo", "energy", "loudness" and "valence" from the 8 subgenres chosen to be relatively similar to rap according to Every Noise At Once. Ideally, we would use some of the more in depth features, however due to the size of the data, using such features will computationally be quite expensive.
+We will be using XGBoost as our multi-label classifier, using it's default values. After training our model, we obtain the ranking of most important features, and shown in the first plot. Tempo and speechiness seem to be most important for classifying the correct subgere, which makes sense as both tempo and speechiness can vary a lot between the various subgenres. As for prediction results, in the histogram, most tracks seem to be predicted as either G Funk, Melodic Rap or R&B. These three subgenres alone can encompass a large amount of the rap genre, thus it is no surprise that these labels are most predicted. Pop Rap and Trap seem to be least predicted, possibly due to the fact that both are hard to identify with purely the features provided, and would likely need other features to more accurately predict tracks for these labels. 
+
+- Unfortunately, while trying to perform clustering, trying to group artist tracks into the various subgenres and visualize this accurately using t-SNE and heatmaps proved to either not provide meaningful results or was computationally complex to achieve. If possible, next time I would like to perform unsupervised learning that could give me better insight into the various genres of my corpus. 
 
 Conclusion
 ===================================================
 
-In conclusion, the use of R and the spotifyr package has enabled us to explore and analyze various music playlists in a comprehensive manner.
- We have been able to use a variety of techniques including data visualization, clustering,
-  classification and machine learning to uncover patterns and insights in the data. Through this analysis,
-   we have gained a better understanding of the characteristics and preferences of different genres, subgenres,
-    and playlists. Additionally, we have demonstrated how to perform various analyses on both the track and playlist level.
-     This approach can be useful for a wide range of applications such as recommending similar playlists to users or analyzing listener preferences for targeted advertising.
-      The insights gained from this analysis can also provide valuable information to the music industry for marketing and promotional purposes. 
-      Overall, the use of R and the spotifyr package is a powerful tool for analyzing music data and can be used to gain insights into a wide range of music-related research questions.
+- With the usage of spotify's API and R, I was able to visualize various features of my corpus, ranging from simple track-level features to intricate timbre features using self-similarity matrices. I gained a better understanding of the various features that were hidden within my corpus, allowing me to understand what made some of these tracks unique to me and how I could possibly find tracks which could also interest me. Furthermore, I gained a lot of knowledge on effectively using R for data visualization, feature selection and modelling. Prior to this course, I had mostly limited myself to simple Python plots, however R has shown me how much I could improve plots to present to others.
+
+- I would have liked to spend more time looking into clustering and classification techniques, as I felt I did not spend as much time or effort as I should have. Perhaps I could perform some of the future in order to look for artists I may also be interested in.
